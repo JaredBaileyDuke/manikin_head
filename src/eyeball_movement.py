@@ -10,13 +10,19 @@ left_bottom    = kit.servo[3]
 right_top      = kit.servo[6]
 right_bottom   = kit.servo[7]
 
-# Eyeball movement
+# Eyeballs
+# Left eye (existing)
 left_eye_lr    = kit.servo[0]  # left-right
 left_eye_ud    = kit.servo[1]  # up-down
+# Right eye (new)
+right_eye_lr   = kit.servo[4]  # left-right
+right_eye_ud   = kit.servo[5]  # up-down
 
 # Match your servos' pulse range
-for s in (left_bottom, left_top, right_bottom, right_top,
-          left_eye_lr, left_eye_ud):
+for s in (
+    left_bottom, left_top, right_bottom, right_top,
+    left_eye_lr, left_eye_ud, right_eye_lr, right_eye_ud
+):
     s.set_pulse_width_range(500, 2500)
 
 # --- Calibrated positions ---
@@ -40,6 +46,17 @@ LEFT_EYE_CENTER_UD  = 110
 LEFT_EYE_UP         = 140
 LEFT_EYE_DOWN       = 90
 
+# Right eyeball (servo 4 = left-right, servo 5 = up-down)
+# Ranges you provided:
+#   L/R: 60–160 (center 110)
+#   U/D: 110–160 (center 125)
+RIGHT_EYE_CENTER_LR = 110
+RIGHT_EYE_LEFT      = 60
+RIGHT_EYE_RIGHT     = 160
+RIGHT_EYE_CENTER_UD = 125
+RIGHT_EYE_UP        = 160
+RIGHT_EYE_DOWN      = 110
+
 # Blink timing
 BLINK_PERIOD_S = 1.0
 CLOSE_TIME_S   = 0.15
@@ -60,29 +77,39 @@ def blink():
              RIGHT_BOTTOM_OPEN, RIGHT_TOP_OPEN)
     sleep(OPEN_TIME_S)
 
+def set_eyes(l_lr, l_ud, r_lr, r_ud):
+    left_eye_lr.angle  = l_lr
+    left_eye_ud.angle  = l_ud
+    right_eye_lr.angle = r_lr
+    right_eye_ud.angle = r_ud
+
 # --- Start positions ---
 set_lids(LEFT_BOTTOM_OPEN, LEFT_TOP_OPEN,
          RIGHT_BOTTOM_OPEN, RIGHT_TOP_OPEN)
-left_eye_lr.angle = LEFT_EYE_CENTER_LR
-left_eye_ud.angle = LEFT_EYE_CENTER_UD
+set_eyes(LEFT_EYE_CENTER_LR, LEFT_EYE_CENTER_UD,
+         RIGHT_EYE_CENTER_LR, RIGHT_EYE_CENTER_UD)
 sleep(0.5)
 
 # --- Loop ---
 while True:
-    # Left eye - move left
-    left_eye_lr.angle = LEFT_EYE_LEFT
+    # Move both eyes left
+    set_eyes(LEFT_EYE_LEFT, LEFT_EYE_CENTER_UD,
+             RIGHT_EYE_LEFT, RIGHT_EYE_CENTER_UD)
     sleep(1.0)
 
-    # Back to center
-    left_eye_lr.angle = LEFT_EYE_CENTER_LR
+    # Back to center (both eyes)
+    set_eyes(LEFT_EYE_CENTER_LR, LEFT_EYE_CENTER_UD,
+             RIGHT_EYE_CENTER_LR, RIGHT_EYE_CENTER_UD)
     sleep(1.0)
 
-    # Move up
-    left_eye_ud.angle = LEFT_EYE_UP
+    # Move both eyes up
+    set_eyes(LEFT_EYE_CENTER_LR, LEFT_EYE_UP,
+             RIGHT_EYE_CENTER_LR, RIGHT_EYE_UP)
     sleep(1.0)
 
-    # Back to center
-    left_eye_ud.angle = LEFT_EYE_CENTER_UD
+    # Back to center (both eyes)
+    set_eyes(LEFT_EYE_CENTER_LR, LEFT_EYE_CENTER_UD,
+             RIGHT_EYE_CENTER_LR, RIGHT_EYE_CENTER_UD)
     sleep(1.0)
 
     # Blink both eyes
