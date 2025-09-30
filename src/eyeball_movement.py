@@ -92,26 +92,41 @@ sleep(0.5)
 
 # --- Loop ---
 while True:
-    # Move both eyes left
+    # 1) Left/right: move LEFT
     set_eyes(LEFT_EYE_LEFT, LEFT_EYE_CENTER_UD,
              RIGHT_EYE_LEFT, RIGHT_EYE_CENTER_UD)
     sleep(1.0)
 
-    # Back to center (both eyes)
+    # 2) Left/right: move RIGHT
+    set_eyes(LEFT_EYE_RIGHT, LEFT_EYE_CENTER_UD,
+             RIGHT_EYE_RIGHT, RIGHT_EYE_CENTER_UD)
+    sleep(1.0)
+
+    # 3) Left/right: move CENTER
     set_eyes(LEFT_EYE_CENTER_LR, LEFT_EYE_CENTER_UD,
              RIGHT_EYE_CENTER_LR, RIGHT_EYE_CENTER_UD)
     sleep(1.0)
 
-    # Move both eyes up
+    # 4) Blink
+    blink()
+    sleep(1.0)
+
+    # 5) Up/down: move UP
     set_eyes(LEFT_EYE_CENTER_LR, LEFT_EYE_UP,
              RIGHT_EYE_CENTER_LR, RIGHT_EYE_UP)
     sleep(1.0)
 
-    # Back to center (both eyes)
+    # 6) Up/down: move DOWN
+    set_eyes(LEFT_EYE_CENTER_LR, LEFT_EYE_DOWN,
+             RIGHT_EYE_CENTER_LR, RIGHT_EYE_DOWN)
+    sleep(1.0)
+
+    # 7) Up/down: move CENTER
     set_eyes(LEFT_EYE_CENTER_LR, LEFT_EYE_CENTER_UD,
              RIGHT_EYE_CENTER_LR, RIGHT_EYE_CENTER_UD)
     sleep(1.0)
 
-    # Blink both eyes
+    # 8) Blink
     blink()
     sleep(1.0)
+
